@@ -19,3 +19,6 @@ Responses will be manually categorized as:
 - Small prompt set
 - Manual labeling
 - Single model
+  
+## Preliminary Observations
+Rephrased prompts using fictional or academic framing were more likely to elicit partial or full compliance than direct requests.
