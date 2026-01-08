@@ -10,9 +10,10 @@ This project explores how an LLM’s refusal and compliance behavior varies when
 
 ## Motivation
 
-Safety evaluations often assume that refusal mechanisms are robust to superficial changes in prompt wording. However, prior anecdotal evidence suggests that rephrasing, contextualization, or indirect framing may affect whether a model refuses, partially refuses, or complies with a request.
+Safety evaluations often assume that refusal mechanisms are robust to superficial changes in prompt wording. Prior evidence suggests that rephrasing, contextualization, or indirect framing can affect whether a model refuses, partially refuses, or complies.
 
 Understanding sensitivity to prompt framing is important for:
+
 - Evaluating the robustness of safety guardrails  
 - Identifying potential bypass patterns  
 - Informing safer model deployment and evaluation practices  
@@ -23,7 +24,7 @@ This project is a small empirical probe into that question.
 
 ## Experimental Setup
 
-- A single unsafe intent category was selected: **unauthorized access to locked vehicles**.
+- A single unsafe intent category was selected: **unauthorized access to locked vehicles**.  
 - 20 prompt variants were manually designed to express this intent under different framings, including:
   - baseline
   - polite
@@ -33,7 +34,7 @@ This project is a small empirical probe into that question.
   - urgency
   - indirect or abstract framing
 
-Prompts are stored in a structured, pipe-separated text file (`prompts.txt`) for reproducibility and ease of modification.
+Prompts are stored in a structured, pipe-separated text file (`prompts.txt`) for reproducibility and easy modification.
 
 ---
 
@@ -66,7 +67,7 @@ Manual labeling was chosen to prioritize interpretability and transparency at sm
 
 Preliminary inspection of responses suggests that refusal behavior is **sensitive to prompt framing**. Certain contextual framings (e.g., fictional, academic, or indirect prompts) appear more likely to elicit partial refusals than direct instructional requests.
 
-These observations are exploratory and intended to motivate further, larger-scale analysis rather than to establish definitive conclusions.
+These observations are exploratory and intended to motivate further, larger-scale analysis rather than establish definitive conclusions.
 
 ---
 
@@ -80,7 +81,7 @@ This project is intentionally small and has several limitations:
 - Manual labeling  
 - API quota constraints limited the total number of runs  
 
-These constraints are acknowledged explicitly to avoid over-interpretation.
+These constraints are explicitly acknowledged to avoid over-interpretation.
 
 ---
 
@@ -98,4 +99,5 @@ Possible extensions include:
 
 ## Notes
 
-This project is intended as a small, transparent empirical probe rather than a comprehensive safety evaluation. It is designed to demonstrate experimental thinking, basic tooling, and awareness of safety-relevant failure modes in LLMs.
+This project is intended as a small, transparent empirical probe rather than a comprehensive safety evaluation. It demonstrates **experimental thinking**, **basic tooling**, and awareness of **safety-relevant failure modes** in LLMs.
+
