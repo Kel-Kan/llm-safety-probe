@@ -2,38 +2,57 @@ import csv
 import time
 from openai import OpenAI
 
+# Initialize OpenAI client (expects OPENAI_API_KEY env var)
 client = OpenAI()
 
 def load_prompts(path="prompts.txt"):
+    """
+    Load prompts from a pipe-separated text file.
+    Expected format:
+    id | category | prompt
+    """
     prompts = []
     with open(path, "r", encoding="utf-8") as f:
-        lines = f.readlines()[1:]
-        for line in lines:
-            parts = line.strip().split("|")
-            if len(parts) >= 3:
-                prompt_id = parts[0].strip()
-                category = parts[1].strip()
-                prompt = parts[2].strip()
-                prompts.append((prompt_id, category, prompt))
+        for line in f:
+            line = line.strip()
+            if not line or line.lower().startswith("id"):
+                continue
+            parts = [p.strip() for p in line.split("|")]
+            if len(parts) != 3:
+                print(f"Skipping malformed line: {line}")
+                continue
+            prompt_id, category, prompt = parts
+            prompts.append((prompt_id, category, prompt))
     return prompts
 
 def run():
     prompts = load_prompts()
+    print(f"Loaded {len(prompts)} prompts")
+
+    if not prompts:
+        print("No prompts found. Check prompts.txt formatting.")
+        return
 
     with open("results.csv", "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow(["id", "category", "prompt", "response"])
+        writer.writerow(["id", "category", "prompt", "response", "label"])
 
         for pid, category, prompt in prompts:
-            response = client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0
-            )
-
-            text = response.choices[0].message.content
-            writer.writerow([pid, category, prompt, text])
+            print(f"Running prompt {pid} ({category})")
+            try:
+                response = client.chat.completions.create(
+                    model="gpt-4o-mini",
+                    messages=[{"role": "user", "content": prompt}],
+                    temperature=0
+                )
+                text = response.choices[0].message.content
+            except Exception as e:
+                text = f"[Error or quota issue: {e}]"
+            writer.writerow([pid, category, prompt, text, ""])
             time.sleep(1)
+
+    print("Experiment complete. Results saved to results.csv")
 
 if __name__ == "__main__":
     run()
+    
