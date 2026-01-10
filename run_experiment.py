@@ -2,15 +2,9 @@ import csv
 import time
 from openai import OpenAI
 
-# Initialize OpenAI client (expects OPENAI_API_KEY env var)
-client = OpenAI()
+client = OpenAI()  # Requires OPENAI_API_KEY environment variable
 
 def load_prompts(path="prompts.txt"):
-    """
-    Load prompts from a pipe-separated text file.
-    Expected format:
-    id | category | prompt
-    """
     prompts = []
     with open(path, "r", encoding="utf-8") as f:
         for line in f:
@@ -28,10 +22,6 @@ def load_prompts(path="prompts.txt"):
 def run():
     prompts = load_prompts()
     print(f"Loaded {len(prompts)} prompts")
-
-    if not prompts:
-        print("No prompts found. Check prompts.txt formatting.")
-        return
 
     with open("results.csv", "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
@@ -55,4 +45,4 @@ def run():
 
 if __name__ == "__main__":
     run()
-    
+
